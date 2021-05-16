@@ -3,14 +3,18 @@ import requests
 import datetime
 import json
 
-url = "<Slack Incoming Webhook URL"
+url = "<Slack Incoming Webhook URL>"
 token = '<Todoist Token>'
+
+morning = 9 #朝
+night = 21 #夜
 
 today = str(datetime.date.today())
 now = datetime.datetime.now()
 api = todoist.api.TodoistAPI(token)
 api.sync()
 
+#タスクの取得
 items = api.state['items']
 todaysTask = []
 for x in items:
@@ -22,10 +26,11 @@ for x in items:
 tasks = "・" + "\n・".join(todaysTask)
 
 text = ""
-if now.hour < 9:
+#時間ごとに処理
+if now.hour < morning:
     #朝
     text += "今日のタスクはこちらです。\n" + tasks
-elif (now.hour > 9) & (now.hour < 21):
+elif (now.hour > morning) & (now.hour < night):
     #日中
     if todaysTask == []:
         text += "既に今日のタスクはすべて完了しました。"
