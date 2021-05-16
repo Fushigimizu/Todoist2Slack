@@ -44,4 +44,4 @@ else:
         text += "今日は以下のタスクを終えられませんでした……\n" + tasks + "\n明日は頑張りましょう。"
 
 
-request = requests.post(url, data=json.dumps({"text":text}), headers={'content-type': 'application/json'})
+request = requests.post(url, data=json.dumps({'text':text}), headers={'content-type': 'application/json'})
