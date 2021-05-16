@@ -30,7 +30,7 @@ text = ""
 if now.hour < morning:
     #朝
     text += "今日のタスクはこちらです。\n" + tasks
-elif (now.hour > morning) & (now.hour < night):
+elif (now.hour >= morning) & (now.hour < night):
     #日中
     if todaysTask == []:
         text += "既に今日のタスクはすべて完了しました。"
