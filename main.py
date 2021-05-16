@@ -4,7 +4,7 @@ import datetime
 import json
 
 url = "<Slack Incoming Webhook URL>"
-token = '<Todoist Token>'
+token = "<Todoist Token>"
 
 morning = 9 #朝
 night = 21 #夜
