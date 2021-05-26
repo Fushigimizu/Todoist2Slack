@@ -1,10 +1,16 @@
+# -*- coding: utf-8 -*-
 import todoist
 import requests
 import datetime
 import json
+import os
+from dotenv import load_dotenv
 
-url = "<Slack Incoming Webhook URL>"
-token = "<Todoist Token>"
+#Load Settings
+load_dotenv()
+
+url = os.environ['SLACK_URL']
+token = os.environ['TODOIST_TOKEN']
 
 morning = 9 #朝
 night = 21 #夜
