@@ -34,7 +34,7 @@ def parent(x_data):
 
 for x in items:
     if (x.data['due'] != None):
-        if(x.data['due']['date'] == today):
+        if(x.data['due']['date'] == today) & (x.data['checked'] == 0):
             parentNames = parent(x.data)
             priority = x.data['priority']
             todaysTask[priority-1].append(parentNames + x.data['content'])
