@@ -22,20 +22,36 @@ api.sync()
 
 #タスクの取得
 items = api.state['items']
-todaysTask = []
+todaysTask = [[],[],[],[]]
+
+def parent(x_data):
+    parentNames = ""
+    if(x_data['parent_id'] != None):
+        parentData = api.items.get(x_data['parent_id'])
+        rec = parent(parentData['item'])
+        parentNames = rec + parentData['item']['content'] + " - "
+    return parentNames
+
 for x in items:
     if (x.data['due'] != None):
-        if(x.data['due']['date'] == today) & (x.data['checked'] == 0):
-            todaysTask.append(x.data['content'])
+        if(x.data['due']['date'] == today):
+            parentNames = parent(x.data)
+            priority = x.data['priority']
+            todaysTask[priority-1].append(parentNames + x.data['content'])
             
+tasks = "---------------------------------------\n"  
+for i in range(4):
+    tasks += "優先度" + str(i+1) + "\n"
+    if todaysTask[3-i] != []:
+        tasks += "・" + "\n・".join(todaysTask[3-i])
+    tasks += "\n---------------------------------------\n"
 
-tasks = "・" + "\n・".join(todaysTask)
 
 text = ""
 #時間ごとに処理
 if now.hour < morning:
     #朝
-    text += "今日のタスクはこちらです。\n" + tasks
+    text += "今日のタスクはこちらです。\n" + tasks + "\n今日も頑張りましょう！"
 elif (now.hour >= morning) & (now.hour < night):
     #日中
     if todaysTask == []:
