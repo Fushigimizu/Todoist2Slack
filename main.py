@@ -4,6 +4,7 @@ import requests
 import datetime
 import json
 import os
+import re
 from dotenv import load_dotenv
 
 #Load Settings
@@ -16,6 +17,7 @@ morning = 9 #朝
 night = 21 #夜
 
 today = str(datetime.date.today())
+re_time = re.compile(today + 'T(\d\d\:\d\d)\:\d\d')
 now = datetime.datetime.now()
 api = todoist.api.TodoistAPI(token)
 api.sync()
@@ -26,18 +28,23 @@ todaysTask = [[],[],[],[]]
 
 def parent(x_data):
     parentNames = ""
-    if(x_data['parent_id'] != None):
+    if(x_data['parent_id']):
         parentData = api.items.get(x_data['parent_id'])
         rec = parent(parentData['item'])
         parentNames = rec + parentData['item']['content'] + " - "
     return parentNames
 
 for x in items:
-    if (x.data['due'] != None):
-        if(x.data['due']['date'] == today) & (x.data['checked'] == 0):
+    if (x.data['due']):
+        if(x.data['due']['date'].startswith(today)) & (x.data['checked'] == 0):
             parentNames = parent(x.data)
             priority = x.data['priority']
-            todaysTask[priority-1].append(parentNames + x.data['content'])
+            time = ""
+            timeGroup = re_time.search(x.data['due']['date'])
+            if timeGroup:
+                time = '[～' + str(timeGroup.group(1)) + ']'
+
+            todaysTask[priority-1].append(time + parentNames + x.data['content'])
             
 tasks = "---------------------------------------\n"  
 for i in range(4):
