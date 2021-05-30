@@ -58,16 +58,16 @@ text = ""
 #時間ごとに処理
 if now.hour < morning:
     #朝
-    text += "今日のタスクはこちらです。\n" + tasks + "\n今日も頑張りましょう！"
+    text += "おはようございます。今日のタスクはこちらです。\n" + tasks + "\n今日も頑張りましょう！"
 elif (now.hour >= morning) & (now.hour < night):
     #日中
-    if todaysTask == []:
-        text += "既に今日のタスクはすべて完了しました。"
+    if todaysTask == [[],[],[],[]]:
+        text += "既に今日のタスクはすべて完了しました。頑張りましたね！"
     else:
         text += "現在残っているタスクはこちらです。\n"  + tasks
 else:
     #就寝前
-    if todaysTask == []:
+    if todaysTask == [[],[],[],[]]:
         text += "今日はすべてのタスクを完了しました！えらい！"
     else:
         text += "今日は以下のタスクを終えられませんでした……\n" + tasks + "\n明日は頑張りましょう。"
